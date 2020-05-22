@@ -1,0 +1,13 @@
+apiVersion: scorecard.operatorframework.io/v1alpha1
+kind: Test
+metadata:
+  name: test-sample
+spec:
+  image: busybox
+  entrypoint:
+  - /bin/sh
+  - -c
+  - 'state=$( stat /bundle/manifests > /dev/null 2>&1 && echo -n "pass" || echo -n "fail"); echo "{\"apiVersion\":\"scorecard.operatorframework.io/v1alpha1\",\"kind\":\"Test\",\"status\":{\"results\":[{\"name\": \"Smoke Test\",\"description\": \"Test to see if the scorecard operator works\",\"state\": \"pass\"},{\"name\": \"Bundle exists\",\"description\": \"Test to see if the bundle exists and is extracted\",\"state\": \"$state\"}]}}"'
+  bundleConfigMap: sample-bundle
+  labels:
+    suite: smoke
